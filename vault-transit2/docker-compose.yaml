@@ -1,0 +1,70 @@
+name: vault-transit2
+
+services:
+  vault-server4:
+    cap_add:
+      - IPC_LOCK
+    container_name: vault-container4
+    image: hashicorp/vault:1.17
+    hostname: vault-server4
+    ports:
+      - "8206:8200"
+    networks:
+      - vault-transit1_vault-cluster
+    environment:
+      - VAULT_ADDR=http://0.0.0.0:8200 
+    volumes:
+      # - storage:/vault/file
+      - ./vault-server4/file:/vault/file
+      - ./vault-server4/config:/vault/config
+      - ./vault-server4/logs:/vault/logs
+      - ./unseal-script:/unseal-script
+    entrypoint: vault server -config=/vault/config/config.hcl
+
+  vault-server5:
+    cap_add:
+      - IPC_LOCK
+    container_name: vault-container5
+    image: hashicorp/vault:1.17
+    hostname: vault-server5
+    ports:
+      - "8208:8200"
+    networks:
+      - vault-transit1_vault-cluster
+    environment:
+      - VAULT_ADDR=http://0.0.0.0:8200 
+    volumes:
+      # - storage:/vault/file
+      - ./vault-server5/file:/vault/file
+      - ./vault-server5/config:/vault/config
+      - ./vault-server5/logs:/vault/logs
+      - ./unseal-script:/unseal-script
+    entrypoint: vault server -config=/vault/config/config.hcl
+
+  vault-server6:
+    cap_add:
+      - IPC_LOCK
+    container_name: vault-container6
+    image: hashicorp/vault:1.17
+    hostname: vault-server6
+    ports:
+      - "8210:8200"
+    networks:
+      - vault-transit1_vault-cluster
+    environment:
+      - VAULT_ADDR=http://0.0.0.0:8200 
+    volumes:
+      # - storage:/vault/file
+      - ./vault-server6/file:/vault/file
+      - ./vault-server6/config:/vault/config
+      - ./vault-server6/logs:/vault/logs
+      - ./unseal-script:/unseal-script
+    entrypoint: vault server -config=/vault/config/config.hcl
+
+networks:
+  vault-transit1_vault-cluster:
+    external: true
+
+# volumes:
+#   storage:
+#     name: vault-storage1
